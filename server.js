@@ -18,7 +18,7 @@ app.get('/locations/:key', (req, res) => {
 });
 
 app.post('/locations', urlencodedParser, (req, res) => {
-  location = JSON.stringify(new Location(req.body.key, 1211, 2222, 18012020));
+  location = JSON.stringify(new Location(req.body.key, req.body.long, req.body.lat, req.body.time));
   console.log(location);
   res.contentType('json');
   res.send(location);
