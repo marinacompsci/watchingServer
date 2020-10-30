@@ -3,6 +3,11 @@ let app = express();
 let location;
 
 
+app.get('/', (req, res) => {
+  res.send('You must pass your key as query, like this /locations/11111');
+});
+
+
 app.get('/locations/:key', (req, res) => {
   //console.log(req.params)
   location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
@@ -10,11 +15,8 @@ app.get('/locations/:key', (req, res) => {
   res.send(location);
 });
 
-app.get('/', (req, res) => {
-  res.send('You must pass your key as query, like this /locations/11111');
-});
 
-app.listen(5500, 'localhost', () => {
+app.listen(process.env.PORT || 5500, 'localhost', () => {
   console.log("Server running...");
 });
 
