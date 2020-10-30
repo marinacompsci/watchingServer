@@ -16,7 +16,7 @@ app.get('/locations/:key', (req, res) => {
 });
 
 
-app.listen(process.env.PORT || 5500, 'localhost', () => {
+app.listen(process.env.PORT || 5500, () => {
   console.log("Server running...");
 });
 
