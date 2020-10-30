@@ -4,6 +4,11 @@ var bodyParser = require('body-parser');
 let location;
 var urlencodedParser = bodyParser.urlencoded({ extended: false })  
 
+// DB
+const { Client } = require('pg');
+
+
+//app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   res.send('You must pass your key as query, like this /locations/11111');
@@ -34,4 +39,24 @@ function Location(id, longitude, latitude, time) {
   this.latitude = latitude;
   this.time = time;
 }
+
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+client.connect();
+/*
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
+});
+*/
+
 
