@@ -10,6 +10,10 @@ app.get('/locations/:key', (req, res) => {
   res.send(location);
 });
 
+app.get('/', (req, res) => {
+  res.send('You must pass your key as query, like this /locations/11111');
+});
+
 app.listen(5500, 'localhost', () => {
   console.log("Server running...");
 });
