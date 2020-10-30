@@ -9,7 +9,12 @@ app.get('/', (req, res) => {
 
 
 app.get('/locations/:key', (req, res) => {
-  //console.log(req.params)
+  location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
+  res.contentType('json');
+  res.send(location);
+});
+
+app.post('/locations/:key', (req, res) => {
   location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
   res.contentType('json');
   res.send(location);
