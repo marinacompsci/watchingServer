@@ -1,6 +1,8 @@
 let express = require('express');
 let app = express();
+var bodyParser = require('body-parser');  
 let location;
+var urlencodedParser = bodyParser.urlencoded({ extended: false })  
 
 
 app.get('/', (req, res) => {
@@ -10,16 +12,17 @@ app.get('/', (req, res) => {
 
 app.get('/locations/:key', (req, res) => {
   location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
+  console.log(location);
   res.contentType('json');
   res.send(location);
 });
 
-app.post('/locations/:key', (req, res) => {
-  location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
+app.post('/locations', urlencodedParser, (req, res) => {
+  location = JSON.stringify(new Location(req.body.key, 1211, 2222, 18012020));
+  console.log(location);
   res.contentType('json');
   res.send(location);
 });
-
 
 app.listen(process.env.PORT || 5500, () => {
   console.log("Server running...");
