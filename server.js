@@ -7,6 +7,11 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 // DB
 const { Client } = require('pg');
 
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+});
+
+
 
 //app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -23,8 +28,24 @@ app.get('/locations/:key', (req, res) => {
 });
 
 app.post('/locations', urlencodedParser, (req, res) => {
-  location = JSON.stringify(new Location(req.body.key, req.body.long, req.body.lat, req.body.time));
-  console.log(location);
+  let key = req.body.key;
+  let long = req.body.long;
+  let lat = req.body.lat;
+  client.connect()
+  .then(() => {
+    let query = `INSERT INTO locations (id,long,lat) values (${key}, ${long}, ${lat});`;
+    client.query(query, (err, res) => {
+      if (err) {console.log("ERROR:" + JSON.stringify(err));}
+      else {
+        console.log("Success.");
+      }
+      client.end()
+      .catch(() => {
+        console.log("Error while ending connection to DB.");
+      });
+    });
+  });
+  
   res.contentType('json');
   res.send(location);
 });
@@ -41,22 +62,8 @@ function Location(id, longitude, latitude, time) {
 }
 
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
 
-client.connect();
-/*
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) throw err;
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
-  client.end();
-});
-*/
+
+
 
 
