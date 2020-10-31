@@ -30,9 +30,11 @@ app.get('/locations/:key', (req, res) => {
     client.query(query, (err, dbRes) => {
       if (err) {console.log(JSON.stringify(err)); }
       else {
-        let jsonResponse = JSON.stringify(new Location(dbRes.rows[0].id, dbRes.rows[0].long, dbRes.rows[0].lat, dbRes.rows[0].modtime));
-        res.contentType('json');
-        res.send(jsonResponse);
+        if (dbRes.rowCount != 0) {
+          let jsonResponse = JSON.stringify(new Location(dbRes.rows[0].id, dbRes.rows[0].long, dbRes.rows[0].lat, dbRes.rows[0].modtime));
+          res.contentType('json');
+          res.send(jsonResponse);
+        }
       }
       
     });
@@ -54,10 +56,6 @@ app.post('/locations', urlencodedParser, (req, res) => {
       else {
         console.log("Success.");
       }
-      /*client.end()
-      .catch(() => {
-        console.log("Error while ending connection to DB.");
-      });*/
     });
   } else {
     res.send("Connection to DB NOT established.");
@@ -79,7 +77,10 @@ function Location(id, longitude, latitude, time) {
 }
 
 
-
+      /*client.end()
+      .catch(() => {
+        console.log("Error while ending connection to DB.");
+      });*/
 
 
 
