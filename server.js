@@ -24,13 +24,25 @@ app.get('/', (req, res) => {
 
 
 app.get('/locations/:key', (req, res) => {
-  location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
-  console.log("GET\t" + location);
-  res.contentType('json');
-  res.send(location);
+  console.log("GET REQUEST RECEIVED");
+  if (connectedToDB) {
+    let query = `SELECT * FROM locations WHERE id = ${req.params.key};`;
+    client.query(query, (err, dbRes) => {
+      if (err) {console.log(JSON.stringify(err)); }
+      else {
+        let jsonResponse = JSON.stringify(new Location(dbRes.rows[0].id, dbRes.rows[0].long, dbRes.rows[0].lat, dbRes.rows[0].modtime));
+        res.contentType('json');
+        res.send(jsonResponse);
+      }
+      
+    });
+  } else {
+    res.send("Connection to DB NOT established.");
+  }
 });
 
 app.post('/locations', urlencodedParser, (req, res) => {
+  console.log("POST REQUEST RECEIVED");
   let key = req.body.key;
   let long = req.body.long;
   let lat = req.body.lat;
@@ -38,7 +50,7 @@ app.post('/locations', urlencodedParser, (req, res) => {
   if (connectedToDB) {
     let query = `INSERT INTO locations (id,long,lat) VALUES (${key}, ${long}, ${lat});`;
     client.query(query, (err, res) => {
-      if (err) {console.log(JSON.stringify(err)); res.send("ERROR:" + JSON.stringify(err));}
+      if (err) {console.log(JSON.stringify(err)); }
       else {
         console.log("Success.");
       }
