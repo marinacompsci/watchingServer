@@ -1,6 +1,6 @@
 CREATE TABLE locations (
   id          integer PRIMARY KEY,
-  long        integer,
-  lat         integer,
+  long        numeric,
+  lat         numeric,
   modtime     timestamp DEFAULT current_timestamp 
 );

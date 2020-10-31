@@ -35,7 +35,7 @@ app.get('/locations/:key', (req, res) => {
           res.contentType('json');
           res.send(jsonResponse);
         } else {
-          res.send("No entry on DB with this ID");
+          res.send("No entry on DB with this ID.");
         }
       }
     });
