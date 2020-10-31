@@ -90,8 +90,8 @@ function tableHasEntry(res, location) {
             console.log(JSON.stringify(err)); 
             res.send(err);
           } else {
-            console.log("Successfully update existing location.");
-            res.send("Successfully update existing location.");
+            console.log("Successfully updated existing location.");
+            res.send("Successfully updated existing location.");
           }
       });
     }
