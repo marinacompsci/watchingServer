@@ -36,7 +36,7 @@ app.post('/locations', urlencodedParser, (req, res) => {
   .then(() => {
     let query = `INSERT INTO locations (id,long,lat) VALUES (${key}, ${long}, ${lat});`;
     client.query(query, (err, res) => {
-      if (err) {console.log("ERROR:" + JSON.stringify(err));}
+      if (err) {res.send("ERROR:" + JSON.stringify(err));}
       else {
         console.log("Success.");
       }
