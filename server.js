@@ -34,9 +34,10 @@ app.get('/locations/:key', (req, res) => {
           let jsonResponse = JSON.stringify(new Location(dbRes.rows[0].id, dbRes.rows[0].long, dbRes.rows[0].lat, dbRes.rows[0].modtime));
           res.contentType('json');
           res.send(jsonResponse);
+        } else {
+          res.send("No entry on DB with this ID");
         }
       }
-      
     });
   } else {
     res.send("Connection to DB NOT established.");
