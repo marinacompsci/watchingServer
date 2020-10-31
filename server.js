@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.get('/locations/:key', (req, res) => {
   location = JSON.stringify(new Location(req.params.key, 1211, 2222, 18012020));
-  console.log(location);
+  console.log("GET\t" + location);
   res.contentType('json');
   res.send(location);
 });
@@ -31,9 +31,10 @@ app.post('/locations', urlencodedParser, (req, res) => {
   let key = req.body.key;
   let long = req.body.long;
   let lat = req.body.lat;
+  location = JSON.stringify(new Location(key, long, lat));
   client.connect()
   .then(() => {
-    let query = `INSERT INTO locations (id,long,lat) values (${key}, ${long}, ${lat});`;
+    let query = `INSERT INTO locations (id,long,lat) VALUES (${key}, ${long}, ${lat});`;
     client.query(query, (err, res) => {
       if (err) {console.log("ERROR:" + JSON.stringify(err));}
       else {
