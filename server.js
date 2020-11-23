@@ -30,7 +30,7 @@ app.get('/locations/:id', (req, res) => {
   if (data.has(key)) {
     res.send(data.get(key));
   } else {
-    res.send('Error: Nothing found under the given key');
+    res.status(404).send('Error: Nothing found under the given key');
   }
   
   /*if (connectedToDB) {
@@ -59,7 +59,6 @@ app.post('/locations', urlencodedParser, (req, res) => {
   location = new Location(req.body.id, req.body.long, req.body.lat);
   data.set(location.id, location);
   res.contentType('json');
-
   
   /*if (connectedToDB) {
     tableHasEntry(res, location);
