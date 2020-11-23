@@ -28,8 +28,9 @@ app.get('/locations/:id', (req, res) => {
   console.log("GET REQUEST RECEIVED");
   let key = req.params.id;
   if (data.has(key)) {
-    res.send(data.get(key));
+    res.status(200).send(data.get(key));
   } else {
+    console.log('Error: Nothing found under the key ' + key);
     res.status(404).send('Error: Nothing found under the given key');
   }
   
