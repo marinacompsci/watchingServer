@@ -1,8 +1,7 @@
-function Location(id, longitude, latitude, time) {
+function Location(id, longitude, latitude) {
   this.id = id;
   this.longitude = longitude;
   this.latitude = latitude;
-  this.time = time;
 }
 
 exports.Location = Location;
