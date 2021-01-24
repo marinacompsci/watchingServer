@@ -27,8 +27,8 @@ app.get('/locations/:id', (req, res) => {
   
 });
 
-app.put('/locations/:id', (req, res) => {
-  console.log("PUT REQUEST WITH ID RECEIVED -- TRYING TO DELETE LOCATION");
+app.delete('/locations/:id', (req, res) => {
+  console.log("DELETE REQUEST WITH ID RECEIVED -- TRYING TO DELETE LOCATION ENTRY");
   const hashedKey = req.params.id;
   console.log(hashedKey);
   if (data.has(hashedKey)) {
@@ -36,7 +36,7 @@ app.put('/locations/:id', (req, res) => {
     res.status(201).send();
   } else {
     console.log('Error: Nothing found under the key ' + hashedKey);
-    res.status(401).send('Error: Invalid key.');
+    res.status(404).send('Error: Nothing found under this key.');
   }
   
 });
