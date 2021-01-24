@@ -27,6 +27,21 @@ app.get('/locations/:id', (req, res) => {
   
 });
 
+app.put('/locations/:id', (req, res) => {
+  console.log("PUT REQUEST WITH ID RECEIVED -- TRYING TO DELETE LOCATION");
+  const hashedKey = req.params.id;
+  console.log(hashedKey);
+  if (data.has(hashedKey)) {
+    data.delete(hashedKey);
+    res.status(201).send();
+  } else {
+    console.log('Error: Nothing found under the key ' + hashedKey);
+    res.status(401).send('Error: Invalid key.');
+  }
+  
+});
+
+
 app.post('/locations', urlencodedParser, (req, res) => {
   console.log("POST REQUEST RECEIVED -- SAVING LOCATION");
   location = new objects.Location(req.body.id, req.body.long, req.body.lat);
