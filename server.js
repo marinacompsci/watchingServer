@@ -1,9 +1,12 @@
-let express = require('express');
-let app = express();
-var bodyParser = require('body-parser');  
-let location;
+const objects = require('./objects.js');
+const functions = require('./functions.js');
+
+const express = require('express');
+const bodyParser = require('body-parser');  
 var urlencodedParser = bodyParser.urlencoded({ extended: false })  
-let data = new Map();
+let app = express();
+let location;
+let data = new Map(); // {(hashed) id: location}
 
 //app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -12,33 +15,30 @@ app.get('/', (req, res) => {
 });
 
 app.get('/locations/:id', (req, res) => {
-  console.log("GET REQUEST RECEIVED");
-  let key = req.params.id;
-  if (data.has(key)) {
-    res.status(200).send(data.get(key));
+  console.log("GET REQUEST WITH ID RECEIVED -- TRYING TO GET LOCATION");
+  const hashedKey = req.params.id;
+  console.log(hashedKey);
+  if (data.has(hashedKey)) {
+    res.status(200).send(data.get(hashedKey));
   } else {
-    console.log('Error: Nothing found under the key ' + key);
-    res.status(404).send('Error: Nothing found under the given key');
+    console.log('Error: Nothing found under the key ' + hashedKey);
+    res.status(401).send('Error: Invalid key.');
   }
   
 });
 
 app.post('/locations', urlencodedParser, (req, res) => {
-  console.log("POST REQUEST RECEIVED");
-  location = new Location(req.body.id, req.body.long, req.body.lat);
-  data.set(location.id, location);
+  console.log("POST REQUEST RECEIVED -- SAVING LOCATION");
+  location = new objects.Location(req.body.id, req.body.long, req.body.lat);
+  // save hashed token to server's in memory hashmap
+  data.set(location.id, location);  // location.id => hashed random key
+  data.forEach((value, key) => console.log(key, value)); 
   res.contentType('json');
+  //res.send(data.get(location.id)); 
   res.send(data.get(location.id)); 
 });
 
-app.listen(process.env.PORT || 5500, () => {
-  console.log("Server running...");
-});
+app.listen(process.env.PORT || 5500, () => {  console.log("Server running..."); });
 
 
-function Location(id, longitude, latitude, time) {
-  this.id = id;
-  this.longitude = longitude;
-  this.latitude = latitude;
-  this.time = time;
-}
+
